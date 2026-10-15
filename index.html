@@ -118,6 +118,7 @@
         <fieldset class="toggles">
           <label class="switch"><input type="checkbox" id="open24"><span class="track"><span class="thumb"></span></span> Open 24×7 only</label>
           <label class="switch"><input type="checkbox" id="ratedOnly"><span class="track"><span class="thumb"></span></span> Rated places only</label>
+          <label class="switch"><input type="checkbox" id="hasPhone"><span class="track"><span class="thumb"></span></span> Has phone number</label>
         </fieldset>
 
         <fieldset>
@@ -152,7 +153,7 @@
 
         <div id="mapWrap" class="map-wrap" hidden>
           <div id="map" aria-label="Map of listings"></div>
-          <p class="map-note">Pins are placed by locality. Tap <b>Directions</b> for exact Google Maps navigation.</p>
+          <p class="map-note">Pins come from Google Maps. Tap <b>Directions</b> for turn-by-turn navigation.</p>
         </div>
 
         <div class="grid" id="grid" aria-live="polite"></div>
@@ -204,20 +205,24 @@
   <!-- DETAIL MODAL -->
   <dialog id="detail" class="detail" aria-labelledby="dTitle">
     <button class="close" id="dClose" aria-label="Close">✕</button>
+    <div class="d-gallery" id="dGallery" hidden></div>
     <div class="d-map"><iframe id="dFrame" title="Location on Google Maps" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
     <div class="d-body">
       <span class="badge" id="dBadge"></span>
       <h3 id="dTitle"></h3>
       <div class="d-rating" id="dRating"></div>
       <p class="d-addr" id="dAddr"></p>
+      <p class="d-phone" id="dPhone"></p>
       <div class="tags" id="dTags"></div>
       <p class="d-price" id="dPrice"></p>
       <div class="d-actions">
+        <a class="btn btn-call" id="dCall">📞 Call now</a>
+        <a class="btn btn-wa" id="dWa" target="_blank" rel="noopener" hidden>💬 WhatsApp</a>
         <a class="btn btn-primary" id="dDir" target="_blank" rel="noopener">🧭 Get directions</a>
         <a class="btn btn-ghost" id="dOpen" target="_blank" rel="noopener">📍 Open in Google Maps</a>
         <button class="btn btn-ghost" id="dShare" type="button">🔗 Share</button>
       </div>
-      <p class="d-hint">Phone numbers, photos, live hours and reviews are on the Google Maps listing.</p>
+      <p class="d-hint">Live hours, more photos and reviews are on the Google Maps listing. Please call ahead to confirm availability.</p>
     </div>
   </dialog>
 

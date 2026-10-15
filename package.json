@@ -1,0 +1,10 @@
+{
+  "name": "dogesh-bhai",
+  "private": true,
+  "type": "module",
+  "description": "Gurgaon pet boarding & vet directory",
+  "scripts": {
+    "refresh-data": "node scripts/fetch-google-places.mjs"
+  },
+  "engines": { "node": ">=18" }
+}

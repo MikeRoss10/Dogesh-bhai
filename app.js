@@ -8,7 +8,7 @@
 
   const state = {
     type: "all", q: "", min: 0, area: "", pin: "",
-    open24: false, ratedOnly: false, sort: "best",
+    open24: false, ratedOnly: false, hasPhone: false, sort: "best",
     view: "grid", shown: PAGE, me: null,
   };
 
@@ -18,6 +18,15 @@
     (p.placeId ? `&destination_place_id=${p.placeId}` : "");
   const gOpen = (p) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(placeQuery(p))}` +
     (p.placeId ? `&query_place_id=${p.placeId}` : "");
+  const telHref = (ph) => "tel:" + ph.replace(/[^\d+]/g, "");
+  // Indian mobile numbers (10 digits starting 6-9) can be reached on WhatsApp
+  function waHref(p) {
+    const d = (p.phone || "").replace(/\D/g, "").replace(/^0/, "").replace(/^91(?=\d{10}$)/, "");
+    if (!/^[6-9]\d{9}$/.test(d)) return "";
+    const msg = `Hi! I found ${p.name} on Dogesh Bhai and wanted to ask about ${p.type === "vet" ? "an appointment for my pet" : "boarding for my dog"}.`;
+    return `https://wa.me/91${d}?text=${encodeURIComponent(msg)}`;
+  }
+  const photoUrl = (ph, w = 600) => `/api/photo?name=${encodeURIComponent(ph.name)}&w=${w}`;
   const gEmbed = (p) => `https://maps.google.com/maps?q=${encodeURIComponent(placeQuery(p))}&z=15&output=embed`;
 
   // ---------- helpers ----------
@@ -64,6 +73,7 @@
     if (state.min > 0 && !(p.rating >= state.min)) return false;
     if (state.ratedOnly && p.rating == null) return false;
     if (state.open24 && !p.open24) return false;
+    if (state.hasPhone && !p.phone) return false;
     if (state.area && p.area !== state.area) return false;
     if (state.pin && p.pincode !== state.pin) return false;
     const q = norm(state.q);
@@ -93,8 +103,11 @@
   // ---------- render ----------
   function card(p, i) {
     const isVet = p.type === "vet";
+    const ph = p.photos && p.photos[0];
     return `<article class="card" style="animation-delay:${Math.min(i % PAGE, 12) * 35}ms">
-      <div class="card-top ${p.type}">
+      <div class="card-top ${p.type}${ph ? " has-photo" : ""}">
+        ${ph ? `<img class="card-photo" src="${photoUrl(ph, 600)}" alt="Photo of ${esc(p.name)}" loading="lazy" onerror="this.parentNode.classList.remove('has-photo');this.remove()">
+        ${ph.author ? `<span class="credit">📷 ${esc(ph.author)}</span>` : ""}` : ""}
         <span class="paw-deco" aria-hidden="true">🐾</span>
         <span class="emoji" aria-hidden="true">${isVet ? "🩺" : "🏡"}</span>
         <span class="badge">${isVet ? "Vet / Hospital" : "Boarding / Daycare"}</span>
@@ -111,9 +124,15 @@
         <p class="addr">${esc(p.address)}</p>
         <div class="tags">${(p.tags || []).map((t) => `<span class="tag">${esc(t)}</span>`).join("")}</div>
         ${p.price ? `<p class="price">💰 ${esc(p.price)}</p>` : ""}
+        ${p.phone ? `<a class="phone-line" href="${telHref(p.phone)}">📞 ${esc(p.phone)}</a>` : ""}
         <div class="card-actions">
+          ${p.phone
+            ? `<a class="btn btn-call" href="${telHref(p.phone)}" aria-label="Call ${esc(p.name)}">📞 Call</a>`
+            : `<a class="btn btn-call soft" href="${gOpen(p)}" target="_blank" rel="noopener" title="Phone number is on the Google Maps listing">📞 Get number</a>`}
           <a class="btn btn-primary" href="${gDir(p)}" target="_blank" rel="noopener">🧭 Directions</a>
-          <button class="btn btn-ghost" data-open="${p.id}">Details</button>
+        </div>
+        <div class="card-actions sub">
+          <button class="btn btn-ghost" data-open="${p.id}">${p.photos && p.photos.length ? "📸 Photos & details" : "Details"}</button>
           <button class="btn btn-ghost icon-btn" data-share="${p.id}" aria-label="Share ${esc(p.name)}">🔗</button>
         </div>
       </div>
@@ -180,6 +199,20 @@
     $("#dAddr").textContent = `📍 ${p.address} · ${p.pincode}`;
     $("#dTags").innerHTML = (p.tags || []).map((t) => `<span class="tag">${esc(t)}</span>`).join("");
     $("#dPrice").textContent = p.price ? `💰 ${p.price}` : "";
+    const call = $("#dCall"), wa = $("#dWa");
+    if (p.phone) {
+      $("#dPhone").innerHTML = `📞 <a href="${telHref(p.phone)}">${esc(p.phone)}</a>${p.phoneSource ? ` <span class="src">${esc(p.phoneSource)}</span>` : ""}`;
+      call.href = telHref(p.phone); call.textContent = "📞 Call now"; call.removeAttribute("target");
+    } else {
+      $("#dPhone").innerHTML = `📞 <span class="unrated">Phone number is on the Google Maps listing</span>`;
+      call.href = gOpen(p); call.textContent = "📞 Get number"; call.target = "_blank";
+    }
+    const w = waHref(p);
+    wa.hidden = !w; if (w) wa.href = w;
+    const gal = $("#dGallery");
+    gal.innerHTML = (p.photos || []).map((ph) => `<figure><img src="${photoUrl(ph, 800)}" alt="Photo of ${esc(p.name)}" loading="lazy" onerror="this.parentNode.remove()">
+      ${ph.author ? `<figcaption>📷 ${ph.authorUri ? `<a href="${esc(ph.authorUri)}" target="_blank" rel="noopener">${esc(ph.author)}</a>` : esc(ph.author)}</figcaption>` : ""}</figure>`).join("");
+    gal.hidden = !(p.photos && p.photos.length);
     $("#dDir").href = gDir(p);
     $("#dOpen").href = gOpen(p);
     $("#dShare").dataset.share = p.id;
@@ -247,6 +280,7 @@
     $("#pin").value = state.pin;
     $("#open24").checked = state.open24;
     $("#ratedOnly").checked = state.ratedOnly;
+    $("#hasPhone").checked = state.hasPhone;
     $("#sort").value = state.sort;
   }
   function update(patch, scroll) {
@@ -300,11 +334,12 @@
     $("#pin").addEventListener("change", (e) => update({ pin: e.target.value }));
     $("#open24").addEventListener("change", (e) => update({ open24: e.target.checked }));
     $("#ratedOnly").addEventListener("change", (e) => update({ ratedOnly: e.target.checked }));
+    $("#hasPhone").addEventListener("change", (e) => update({ hasPhone: e.target.checked }));
     $("#sort").addEventListener("change", (e) => {
       if (e.target.value === "near" && !state.me) { locate(); return; }
       update({ sort: e.target.value });
     });
-    const reset = () => update({ type: "all", q: "", min: 0, area: "", pin: "", open24: false, ratedOnly: false, sort: state.me ? "near" : "best" });
+    const reset = () => update({ type: "all", q: "", min: 0, area: "", pin: "", open24: false, ratedOnly: false, hasPhone: false, sort: state.me ? "near" : "best" });
     $("#resetBtn").addEventListener("click", reset);
     $("#emptyReset").addEventListener("click", reset);
     $("#moreBtn").addEventListener("click", () => { state.shown += PAGE; render(); });
