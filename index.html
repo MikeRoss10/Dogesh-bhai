@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dogesh Bhai: Pet Boarding & Vets in Gurgaon</title>
+  <meta name="description" content="Find trusted dog boarding, daycare and veterinary clinics across Gurgaon. Search by name or pincode, filter by rating and get Google Maps directions. No sign-up.">
+  <meta name="theme-color" content="#FF6B57">
+  <meta property="og:title" content="Dogesh Bhai: Every tail deserves a happy place">
+  <meta property="og:description" content="100+ pet boardings & vets across Gurgaon. Search, filter, navigate. No sign-up.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#explore">Skip to listings</a>
+
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Dogesh Bhai home">
+      <img src="assets/favicon.svg" alt="" width="36" height="36">
+      <span>Dogesh <b>Bhai</b></span>
+    </a>
+    <nav class="nav">
+      <a href="#explore">Explore</a>
+      <a href="#explore" data-jump-type="boarding">Boarding</a>
+      <a href="#explore" data-jump-type="vet">Vets</a>
+      <a href="#care">Why us</a>
+      <a class="nav-sos" href="#explore" data-emergency>🚑 Emergency</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+      <div class="paws" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <span class="eyebrow">🐾 Made with love in Gurgaon</span>
+          <h1>Every wagging tail deserves a <span class="hl">happy place</span>.</h1>
+          <p class="lead"><b id="heroCount">100+</b> pet boardings and vets across Gurgaon, all in one place. No sign-up. Search, compare and get there in one tap.</p>
+
+          <form class="search" id="searchForm" role="search" onsubmit="return false">
+            <div class="seg" role="tablist" aria-label="Category">
+              <button type="button" class="seg-btn active" data-type="all" role="tab" aria-selected="true">All</button>
+              <button type="button" class="seg-btn" data-type="boarding" role="tab" aria-selected="false">🏡 Boarding</button>
+              <button type="button" class="seg-btn" data-type="vet" role="tab" aria-selected="false">🩺 Vets</button>
+            </div>
+            <div class="search-row">
+              <span class="search-ico" aria-hidden="true">🔎</span>
+              <input id="q" type="search" autocomplete="off" placeholder="Search by name, area or pincode (e.g. 122018)" aria-label="Search by name, area or pincode">
+              <button type="button" class="btn btn-primary" id="goBtn">Find</button>
+            </div>
+          </form>
+
+          <div class="chips" id="quickChips">
+            <button class="chip" data-q="Golf Course">⛳ Golf Course Rd</button>
+            <button class="chip" data-q="Sohna">🛣️ Sohna Road</button>
+            <button class="chip" data-q="Palam Vihar">🏘️ Palam Vihar</button>
+            <button class="chip" data-q="122018">📮 122018</button>
+            <button class="chip" data-q="DLF">🏙️ DLF</button>
+            <button class="chip chip-near" id="nearMe">📍 Near me</button>
+          </div>
+        </div>
+        <div class="hero-art">
+          <img class="mascot" src="assets/mascot.svg" alt="Dogesh Bhai mascot, a happy dog" width="380" height="380">
+          <span class="float f1">❤️</span><span class="float f2">🦴</span><span class="float f3">🎾</span><span class="float f4">💛</span>
+          <div class="bubble">Woof! Pick my next holiday home 🏡</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats" aria-label="Directory stats">
+      <div class="stat s1"><b id="statTotal">0</b><span>Places listed</span></div>
+      <div class="stat s2"><b id="statBoard">0</b><span>Boardings & daycares</span></div>
+      <div class="stat s3"><b id="statVet">0</b><span>Vets & pet hospitals</span></div>
+      <div class="stat s4"><b id="stat24">0</b><span>Open 24×7</span></div>
+    </section>
+
+    <!-- SOS -->
+    <section class="sos">
+      <div class="sos-txt"><span class="sos-ico">🚑</span><div><b>Pet emergency?</b> See every vet listed as open 24×7, then navigate straight there.</div></div>
+      <button class="btn btn-light" data-emergency>Show 24×7 vets</button>
+    </section>
+
+    <!-- EXPLORER -->
+    <section class="explore" id="explore">
+      <aside class="filters" id="filters" aria-label="Filters">
+        <div class="filters-head">
+          <h2>Filters</h2>
+          <button class="link" id="resetBtn" type="button">Reset</button>
+        </div>
+
+        <fieldset>
+          <legend>Minimum rating</legend>
+          <div class="pill-group" id="ratingGroup">
+            <button type="button" class="pill active" data-min="0">Any</button>
+            <button type="button" class="pill" data-min="3.5">3.5+ ★</button>
+            <button type="button" class="pill" data-min="4">4.0+ ★</button>
+            <button type="button" class="pill" data-min="4.5">4.5+ ★</button>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Area</legend>
+          <select id="area" aria-label="Area"><option value="">All of Gurgaon</option></select>
+        </fieldset>
+
+        <fieldset>
+          <legend>Pincode</legend>
+          <select id="pin" aria-label="Pincode"><option value="">Any pincode</option></select>
+        </fieldset>
+
+        <fieldset class="toggles">
+          <label class="switch"><input type="checkbox" id="open24"><span class="track"><span class="thumb"></span></span> Open 24×7 only</label>
+          <label class="switch"><input type="checkbox" id="ratedOnly"><span class="track"><span class="thumb"></span></span> Rated places only</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Sort by</legend>
+          <select id="sort" aria-label="Sort by">
+            <option value="best">Best match</option>
+            <option value="rating">Highest rated</option>
+            <option value="reviews">Most reviewed</option>
+            <option value="near">Nearest to me</option>
+            <option value="name">Name (A–Z)</option>
+          </select>
+        </fieldset>
+
+        <div class="care-note">
+          <b>💛 Our promise</b>
+          <p>No ads ranking, no paid boosts. Just honest listings so your buddy gets the best care.</p>
+        </div>
+      </aside>
+
+      <div class="results-wrap">
+        <div class="results-bar">
+          <div>
+            <h2 class="results-title" id="resultsTitle">All places</h2>
+            <p class="results-sub" id="resultsSub"></p>
+          </div>
+          <div class="view-toggle" role="tablist" aria-label="View">
+            <button class="vt active" data-view="grid" role="tab" aria-selected="true">▦ List</button>
+            <button class="vt" data-view="map" role="tab" aria-selected="false">🗺️ Map</button>
+            <button class="vt filters-open" id="filtersOpen" type="button">⚙︎ Filters</button>
+          </div>
+        </div>
+
+        <div id="mapWrap" class="map-wrap" hidden>
+          <div id="map" aria-label="Map of listings"></div>
+          <p class="map-note">Pins are placed by locality. Tap <b>Directions</b> for exact Google Maps navigation.</p>
+        </div>
+
+        <div class="grid" id="grid" aria-live="polite"></div>
+        <div class="empty" id="empty" hidden>
+          <img src="assets/mascot.svg" alt="" width="120" height="120">
+          <h3>Ruff! Nothing matched.</h3>
+          <p>Try another area, a nearby pincode, or loosen the rating filter.</p>
+          <button class="btn btn-primary" id="emptyReset">Clear filters</button>
+        </div>
+        <button class="btn btn-ghost more" id="moreBtn" hidden>Show more</button>
+      </div>
+    </section>
+
+    <!-- CARE -->
+    <section class="care" id="care">
+      <h2 class="section-title">Because they're <span class="hl">family</span> 🐶</h2>
+      <p class="section-sub">Dogesh Bhai started with one simple idea: finding good care for your dog shouldn't be stressful.</p>
+      <div class="care-grid">
+        <article class="care-card c1"><span>🔍</span><h3>Everything in one place</h3><p>Boardings, daycares, clinics and 24×7 hospitals across Gurgaon, searchable by name, area or pincode.</p></article>
+        <article class="care-card c2"><span>🧭</span><h3>One-tap navigation</h3><p>Every listing opens straight in Google Maps for directions, photos, reviews and phone numbers.</p></article>
+        <article class="care-card c3"><span>🙅</span><h3>No sign-up, ever</h3><p>No logins and no forms. Just open the site and find what your pet needs.</p></article>
+        <article class="care-card c4"><span>💛</span><h3>Pet-first, always</h3><p>Ratings are shown with their source, so you can decide with real information.</p></article>
+      </div>
+    </section>
+
+    <!-- CHECKLIST -->
+    <section class="tips">
+      <div class="tips-card">
+        <h2>Before you drop your buddy off ✅</h2>
+        <ul class="checklist">
+          <li><input type="checkbox" id="t1"><label for="t1">Visit the space first. Is it clean, airy and secure?</label></li>
+          <li><input type="checkbox" id="t2"><label for="t2">Carry vaccination records (rabies, DHPPi, kennel cough)</label></li>
+          <li><input type="checkbox" id="t3"><label for="t3">Pack their usual food, a toy and something that smells of home</label></li>
+          <li><input type="checkbox" id="t4"><label for="t4">Ask about the night-time staff and an on-call vet</label></li>
+          <li><input type="checkbox" id="t5"><label for="t5">Ask for daily photo or video updates</label></li>
+          <li><input type="checkbox" id="t6"><label for="t6">Save the nearest 24×7 vet. Dogesh Bhai can find it for you</label></li>
+        </ul>
+      </div>
+      <img class="tips-art" src="assets/mascot.svg" alt="" width="260" height="260">
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="foot-brand"><img src="assets/favicon.svg" alt="" width="28" height="28"> Dogesh <b>Bhai</b></div>
+    <p>Made with 🐾 for the dogs of Gurgaon.</p>
+    <p class="fine">Listing details come from public sources (Google Maps, Justdial, Practo, PetBacker and business websites). Ratings show their source and can change. Please confirm timings and availability with the place before visiting.</p>
+  </footer>
+
+  <!-- DETAIL MODAL -->
+  <dialog id="detail" class="detail" aria-labelledby="dTitle">
+    <button class="close" id="dClose" aria-label="Close">✕</button>
+    <div class="d-map"><iframe id="dFrame" title="Location on Google Maps" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+    <div class="d-body">
+      <span class="badge" id="dBadge"></span>
+      <h3 id="dTitle"></h3>
+      <div class="d-rating" id="dRating"></div>
+      <p class="d-addr" id="dAddr"></p>
+      <div class="tags" id="dTags"></div>
+      <p class="d-price" id="dPrice"></p>
+      <div class="d-actions">
+        <a class="btn btn-primary" id="dDir" target="_blank" rel="noopener">🧭 Get directions</a>
+        <a class="btn btn-ghost" id="dOpen" target="_blank" rel="noopener">📍 Open in Google Maps</a>
+        <button class="btn btn-ghost" id="dShare" type="button">🔗 Share</button>
+      </div>
+      <p class="d-hint">Phone numbers, photos, live hours and reviews are on the Google Maps listing.</p>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="vendor/leaflet/leaflet.js"></script>
+  <script src="data/listings.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

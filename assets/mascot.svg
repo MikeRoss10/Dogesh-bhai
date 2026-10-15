@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Dogesh Bhai mascot, a happy dog">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="45%" r="55%">
+      <stop offset="0" stop-color="#FFE38A"/>
+      <stop offset="1" stop-color="#FFC53D"/>
+    </radialGradient>
+  </defs>
+  <circle cx="200" cy="200" r="190" fill="url(#bg)"/>
+  <!-- ears -->
+  <path d="M95 120 C40 140 40 260 85 285 C115 300 130 250 130 200 C130 160 125 110 95 120Z" fill="#8B5A3C"/>
+  <path d="M305 120 C360 140 360 260 315 285 C285 300 270 250 270 200 C270 160 275 110 305 120Z" fill="#8B5A3C"/>
+  <!-- head -->
+  <ellipse cx="200" cy="205" rx="105" ry="110" fill="#E9A86B"/>
+  <!-- face patch -->
+  <ellipse cx="200" cy="250" rx="70" ry="58" fill="#FFF1DE"/>
+  <ellipse cx="240" cy="160" rx="34" ry="30" fill="#C98552"/>
+  <!-- eyes -->
+  <g class="eyes">
+    <ellipse cx="160" cy="180" rx="15" ry="18" fill="#2B2140"/>
+    <ellipse cx="240" cy="180" rx="15" ry="18" fill="#2B2140"/>
+    <circle cx="165" cy="173" r="5" fill="#fff"/>
+    <circle cx="245" cy="173" r="5" fill="#fff"/>
+  </g>
+  <!-- cheeks -->
+  <ellipse cx="130" cy="232" rx="16" ry="10" fill="#FF8FA3" opacity=".6"/>
+  <ellipse cx="270" cy="232" rx="16" ry="10" fill="#FF8FA3" opacity=".6"/>
+  <!-- nose -->
+  <path d="M182 222 Q200 210 218 222 Q214 240 200 242 Q186 240 182 222Z" fill="#2B2140"/>
+  <ellipse cx="194" cy="221" rx="6" ry="3" fill="#fff" opacity=".5"/>
+  <!-- mouth -->
+  <path d="M200 242 V255 M200 255 Q182 272 166 258 M200 255 Q218 272 234 258" stroke="#2B2140" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <!-- tongue -->
+  <path d="M188 262 Q200 300 212 262 Z" fill="#FF6B57"/>
+  <!-- collar -->
+  <path d="M120 300 Q200 340 280 300 L284 318 Q200 360 116 318 Z" fill="#7C5CFF"/>
+  <circle cx="200" cy="345" r="18" fill="#22C3A6" stroke="#fff" stroke-width="4"/>
+  <path d="M193 341 a4 4 0 1 1 0.1 0 M207 341 a4 4 0 1 1 0.1 0 M200 337 a3.5 3.5 0 1 1 0.1 0 M200 353 q-9 -1 -6 -7 q6 -4 12 0 q3 6 -6 7z" fill="#fff"/>
+</svg>
