@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-label="A happy dog sticker">
+  <g stroke="#1B1B1F" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    <!-- sticker outline -->
+    <path d="M160 18c62 0 118 40 128 104 12 74-36 158-128 166C68 296 20 212 32 122 42 58 98 18 160 18z" fill="#fff"/>
+    <!-- ears -->
+    <path d="M78 74c-30 6-46 54-34 98 6 22 30 26 40 8 12-22 18-58 14-84-2-14-8-24-20-22z" fill="#8A5A3B"/>
+    <path d="M242 74c30 6 46 54 34 98-6 22-30 26-40 8-12-22-18-58-14-84 2-14 8-24 20-22z" fill="#8A5A3B"/>
+    <!-- head -->
+    <path d="M160 62c50 0 84 36 84 92 0 62-38 104-84 104s-84-42-84-104c0-56 34-92 84-92z" fill="#F4B07A"/>
+    <!-- eye patch -->
+    <path d="M190 104c18-4 32 8 32 26s-14 26-30 22c-14-4-20-18-16-30 2-8 6-16 14-18z" fill="#C97F4C" stroke="none"/>
+    <!-- muzzle -->
+    <path d="M160 160c34 0 54 18 54 42 0 26-24 42-54 42s-54-16-54-42c0-24 20-42 54-42z" fill="#FFF3E2"/>
+    <!-- eyes -->
+    <circle cx="126" cy="134" r="11" fill="#1B1B1F"/>
+    <circle cx="196" cy="134" r="11" fill="#1B1B1F"/>
+    <!-- nose -->
+    <path d="M144 176c10-8 22-8 32 0-2 12-8 18-16 18s-14-6-16-18z" fill="#1B1B1F"/>
+    <!-- mouth -->
+    <path d="M160 194v10M160 204c-6 10-20 12-28 2M160 204c6 10 20 12 28 2" fill="none"/>
+    <!-- tongue -->
+    <path d="M150 212c0 18 20 18 20 0" fill="#FF6B6B"/>
+  </g>
+  <g fill="#fff"><circle cx="130" cy="130" r="3.5"/><circle cx="200" cy="130" r="3.5"/></g>
+  <g fill="#FF9EC7" opacity=".8"><ellipse cx="104" cy="178" rx="12" ry="7"/><ellipse cx="216" cy="178" rx="12" ry="7"/></g>
+</svg>
